@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Records</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cf3232;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="file"], input[type="date"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            height: 100px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .records-list {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .record-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .record-item h4 {
+            margin: 0;
+        }
+        .file-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .file-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Refund Record Entry</h2>
+        <form id="refundForm">
+            <label for="maidName">Maid's Name:</label>
+            <input type="text" id="maidName" placeholder="Enter the maid's name" required>
+
+            <label for="refundAmount">Refund Amount (in NPR):</label>
+            <input type="text" id="refundAmount" placeholder="Enter refund amount" required>
+
+            <label for="refundDate">Refund Date:</label>
+            <input type="date" id="refundDate" required>
+
+            <label for="refundReason">Refund Reason:</label>
+            <input type="text" id="refundReason" placeholder="Enter reason for refund" required>
+
+            <label for="refundFile">Attach Proof Document:</label>
+            <input type="file" id="refundFile" required>
+
+            <label for="notes">Notes/Comments:</label>
+            <textarea id="notes" placeholder="Any additional notes or comments" required></textarea>
+
+            <button type="button" onclick="saveRefundRecord()">Save Refund Record</button>
+        </form>
+    </div>
+
+    <div class="records-list" id="recordsList">
+        <h3>Saved Refund Records</h3>
+        <div id="recordsContainer"></div>
+    </div>
+
+    <script>
+        // Store all the refund records
+        let refundRecords = [];
+
+        // Function to save the refund record data
+        function saveRefundRecord() {
+            // Get form input values
+            const maidName = document.getElementById("maidName").value;
+            const refundAmount = document.getElementById("refundAmount").value;
+            const refundDate = document.getElementById("refundDate").value;
+            const refundReason = document.getElementById("refundReason").value;
+            const refundFile = document.getElementById("refundFile").files[0];
+            const notes = document.getElementById("notes").value;
+
+            // Validation check
+            if (!maidName || !refundAmount || !refundDate || !refundReason || !refundFile || !notes) {
+                alert("Please fill in all fields and attach the required proof document.");
+                return;
+            }
+
+            // Create refund record object
+            const refundRecord = {
+                name: maidName,
+                amount: refundAmount,
+                date: refundDate,
+                reason: refundReason,
+                file: refundFile.name,
+                notes: notes
+            };
+
+            // Add record to the list
+            refundRecords.push(refundRecord);
+
+            // Clear form inputs after submission
+            document.getElementById("refundForm").reset();
+
+            // Display the updated list of refund records
+            displayRefundRecords();
+        }
+
+        // Function to display all refund records
+        function displayRefundRecords() {
+            const recordsContainer = document.getElementById("recordsContainer");
+            recordsContainer.innerHTML = ""; // Clear the existing records before displaying new ones
+
+            refundRecords.forEach((record, index) => {
+                const recordDiv = document.createElement("div");
+                recordDiv.classList.add("record-item");
+
+                recordDiv.innerHTML = `
+                    <h4>Refund Record #${index + 1}</h4>
+                    <p><strong>Name:</strong> ${record.name}</p>
+                    <p><strong>Refund Amount:</strong> NPR ${record.amount}</p>
+                    <p><strong>Refund Date:</strong> ${record.date}</p>
+                    <p><strong>Refund Reason:</strong> ${record.reason}</p>
+                    <p><strong>Document (Proof):</strong> <a href="#" class="file-link" onclick="downloadFile('${record.file}')">Download</a></p>
+                    <p><strong>Notes/Comments:</strong> ${record.notes}</p>
+                `;
+
+                recordsContainer.appendChild(recordDiv);
+            });
+        }
+
+        // Function to simulate file download (here just a placeholder)
+        function downloadFile(fileName) {
+            alert(`Simulating download for: ${fileName}`);
+        }
+    </script>
+
+</body>
+</html>
