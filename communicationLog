@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maid Communication Record with Attachments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            height: 100px;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .records-list {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .record-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .record-item h4 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Maid Communication Record with Attachments</h2>
+        <form id="communicationForm">
+            <label for="maidName">Maid's Name:</label>
+            <input type="text" id="maidName" placeholder="Enter the maid's name" required>
+
+            <label for="communicationDate">Communication Date:</label>
+            <input type="date" id="communicationDate" required>
+
+            <label for="communicationType">Type of Communication (e.g. Talked, Emailed, Instructed):</label>
+            <input type="text" id="communicationType" placeholder="e.g. Talked, Emailed" required>
+
+            <label for="communicationDetails">What was said, written, or instructed:</label>
+            <textarea id="communicationDetails" placeholder="Enter communication details" required></textarea>
+
+            <label for="maidReply">Maid's Reply:</label>
+            <textarea id="maidReply" placeholder="Enter maid's reply" required></textarea>
+
+            <label for="communicationAttachment">Attachment (Phone Logs, Emails, Written Records):</label>
+            <input type="file" id="communicationAttachment" accept="image/*, .pdf, .docx, .txt">
+
+            <button type="button" onclick="saveCommunicationRecord()">Save Communication Record</button>
+        </form>
+    </div>
+
+    <div class="records-list" id="recordsList">
+        <h3>Saved Communication Records</h3>
+        <div id="recordsContainer"></div>
+    </div>
+
+    <script>
+        // Store all the communication records
+        let communicationRecords = [];
+
+        // Function to save the communication record data
+        function saveCommunicationRecord() {
+            // Get form input values
+            const maidName = document.getElementById("maidName").value;
+            const communicationDate = document.getElementById("communicationDate").value;
+            const communicationType = document.getElementById("communicationType").value;
+            const communicationDetails = document.getElementById("communicationDetails").value;
+            const maidReply = document.getElementById("maidReply").value;
+            const communicationAttachment = document.getElementById("communicationAttachment").files[0];
+
+            // Validation check
+            if (!maidName || !communicationDate || !communicationType || !communicationDetails || !maidReply) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Create communication record object
+            const communicationRecord = {
+                name: maidName,
+                date: communicationDate,
+                type: communicationType,
+                details: communicationDetails,
+                reply: maidReply,
+                attachment: communicationAttachment ? communicationAttachment.name : null // Only store the filename
+            };
+
+            // Add record to the list
+            communicationRecords.push(communicationRecord);
+
+            // Clear form inputs after submission
+            document.getElementById("communicationForm").reset();
+
+            // Display the updated list of communication records
+            displayCommunicationRecords();
+        }
+
+        // Function to display all communication records
+        function displayCommunicationRecords() {
+            const recordsContainer = document.getElementById("recordsContainer");
+            recordsContainer.innerHTML = ""; // Clear the existing records before displaying new ones
+
+            communicationRecords.forEach((record, index) => {
+                const recordDiv = document.createElement("div");
+                recordDiv.classList.add("record-item");
+
+                recordDiv.innerHTML = `
+                    <h4>Communication Record #${index + 1}</h4>
+                    <p><strong>Maid's Name:</strong> ${record.name}</p>
+                    <p><strong>Communication Date:</strong> ${record.date}</p>
+                    <p><strong>Communication Type:</strong> ${record.type}</p>
+                    <p><strong>Details/Instruction:</strong> ${record.details}</p>
+                    <p><strong>Maid's Reply:</strong> ${record.reply}</p>
+                    ${record.attachment ? `<p><strong>Attachment:</strong> ${record.attachment}</p>` : ""}
+                `;
+
+                recordsContainer.appendChild(recordDiv);
+            });
+        }
+    </script>
+
+</body>
+</html>
