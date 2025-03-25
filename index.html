@@ -27,6 +27,27 @@
         </a>
        
     </div>
+<!-- Add these scripts BEFORE your custom JavaScript -->
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+
+<script>
+  // Paste your firebaseConfig here
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "test-mode-944f4",
+    // (No need for other fields unless you use Firebase Auth)
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore(); // Firestore instance
+</script>
+
+    
     <script src="scripts.js"></script>
 </body>
 </html>
+
+
