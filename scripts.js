@@ -23,3 +23,19 @@ function saveFormData() {
         alert('Please fill in all the fields');
     }
 }
+
+// Insert data
+async function insertData() {
+  const { data, error } = await supabase
+    .from('messages')
+    .insert([{ content: "Hello from GitHub Pages!" }]);
+}
+
+// Read data
+async function fetchData() {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('*');
+  
+  console.log(data);
+}
