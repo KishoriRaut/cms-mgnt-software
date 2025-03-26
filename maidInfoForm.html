@@ -1,32 +1,37 @@
-<!-- Add Supabase CDN in <head> -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maid Information Form</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
-<!-- Your Form -->
 <body>
-  <form id="maidForm">
-    <h2>Maid Information Form</h2>
+    <div class="form-container">
+        <h2>Maid Information Form</h2>
+        <form id="maidInfoForm">
+            <label for="maidName">Maid's Name:</label>
+            <input type="text" id="maidName" required>
 
-    <label>Maid’s Name:</label>
-    <input type="text" id="maid_name" required>
+            <label for="documents">Document Type:</label>
+            <select id="documents">
+                <option value="Citizenship">Citizenship</option>
+                <option value="Passport">Passport</option>
+                <option value="Education Certificate">Education Certificate</option>
+            </select>
 
-    <label>Document Type:</label>
-    <input type="text" id="document_type" required>
+            <label for="comment">Comments/Notes:</label>
+            <textarea id="comment" required></textarea>
 
-    <label>Citizenship:</label>
-    <input type="text" id="citizenship" required>
+            <label for="maidImage">Upload Photo:</label>
+            <input type="file" id="maidImage">
 
-    <label>Comments/Notes:</label>
-    <textarea id="comments"></textarea>
+            <button type="button" onclick="saveFormData()">Save</button>
+        </form>
 
-    <label>Upload Photo:</label>
-    <input type="file" id="photo" accept="image/*">
-
-    <button type="submit">Save</button>
-  </form>
-
-  <!-- Add this script at the BOTTOM of <body> -->
-  <script src="config.js"></script> <!-- Supabase setup -->
-  <script src="app.js"></script>    <!-- Your form logic -->
+        <div id="savedData"></div>
+        <button class="back-btn" onclick="window.location.href = 'index.html';">Back to Dashboard</button>
+    </div>
+    <script src="scripts.js"></script>
 </body>
+</html>
